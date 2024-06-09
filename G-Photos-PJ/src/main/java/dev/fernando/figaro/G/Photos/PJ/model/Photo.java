@@ -2,9 +2,13 @@ package dev.fernando.figaro.G.Photos.PJ.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
+@Table("PHOTOS")
 public class Photo {
-    private String id;
+    @Id
+    private Integer id;
 
     @NotEmpty
     private String filename;
@@ -16,11 +20,6 @@ public class Photo {
 
     public Photo(){
 
-    }
-
-    public Photo(String id, String filename) {
-        this.id = id;
-        this.filename = filename;
     }
 
 //raw data
@@ -42,11 +41,11 @@ public class Photo {
         this.data = data;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

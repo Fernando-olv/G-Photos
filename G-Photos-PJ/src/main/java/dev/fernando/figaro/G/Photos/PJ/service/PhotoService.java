@@ -1,42 +1,40 @@
 package dev.fernando.figaro.G.Photos.PJ.service;
 
 import dev.fernando.figaro.G.Photos.PJ.model.Photo;
+import dev.fernando.figaro.G.Photos.PJ.repository.PhotosRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 //@Component
 @Service
 
 public class PhotoService {
 
-    private Map<String, Photo> db = new HashMap<>(){{
-        put("1", new Photo("1","hello.jpg"));
-    }};
+   private final PhotosRepository photosRepository;
 
-
-    public Collection<Photo> get() {
-        return db.values();
+    public PhotoService(PhotosRepository photosRepository) {
+        this.photosRepository = photosRepository;
     }
 
-    public Photo get(String id) {
-        return db.get(id);
+
+    public Iterable<Photo> get() {
+        return photosRepository.findAll();
     }
 
-    public Photo remove(String id) {
-        return db.remove(id);
+    public Photo get(Integer id) {
+        return photosRepository.findById(id).orElse(null);
+    }
+
+    public void remove(Integer id) {
+        photosRepository.deleteById(id);
     }
 
     public Photo save(String filename, String contentType, byte[] data) {
         Photo photo = new Photo();
         photo.setContentType(contentType);
-        photo.setId(UUID.randomUUID().toString());
         photo.setFilename(filename);
         photo.setData(data);
-        db.put(photo.getId(), photo);
+        photosRepository.save(photo);
         return photo;
 
     }
